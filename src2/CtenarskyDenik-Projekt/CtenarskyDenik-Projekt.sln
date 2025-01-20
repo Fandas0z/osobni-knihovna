@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik-Projekt", "CtenarskyDenik-Projekt.csproj", "{4964E17A-2455-4954-B915-743301CE9D49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik.WebApi", "CtenarskyDenik.WebApi\CtenarskyDenik.WebApi.csproj", "{1CD5691A-3471-418C-B8BB-FEE3B9F76B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik.Core", "CtenarskyDenik.Core\CtenarskyDenik.Core.csproj", "{FDD4B9ED-AE4C-4FA8-96DB-676FE7023893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik.Application", "CtenarskyDenik.Application\CtenarskyDenik.Application.csproj", "{7FC6AFA1-85BC-40B2-A08E-1442F001A81D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik.Persistence", "CtenarskyDenik.Persistence\CtenarskyDenik.Persistence.csproj", "{BB5A47D2-5189-4D53-9BF0-6742D3B8F58A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtenarskyDenik.Infrastructure", "CtenarskyDenik.Infrastructure\CtenarskyDenik.Infrastructure.csproj", "{D35BB518-39D8-4C49-8B98-82BF4F9A9866}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4964E17A-2455-4954-B915-743301CE9D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4964E17A-2455-4954-B915-743301CE9D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4964E17A-2455-4954-B915-743301CE9D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4964E17A-2455-4954-B915-743301CE9D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD5691A-3471-418C-B8BB-FEE3B9F76B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD5691A-3471-418C-B8BB-FEE3B9F76B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD5691A-3471-418C-B8BB-FEE3B9F76B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD5691A-3471-418C-B8BB-FEE3B9F76B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD4B9ED-AE4C-4FA8-96DB-676FE7023893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD4B9ED-AE4C-4FA8-96DB-676FE7023893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD4B9ED-AE4C-4FA8-96DB-676FE7023893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD4B9ED-AE4C-4FA8-96DB-676FE7023893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FC6AFA1-85BC-40B2-A08E-1442F001A81D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC6AFA1-85BC-40B2-A08E-1442F001A81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC6AFA1-85BC-40B2-A08E-1442F001A81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC6AFA1-85BC-40B2-A08E-1442F001A81D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB5A47D2-5189-4D53-9BF0-6742D3B8F58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB5A47D2-5189-4D53-9BF0-6742D3B8F58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB5A47D2-5189-4D53-9BF0-6742D3B8F58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB5A47D2-5189-4D53-9BF0-6742D3B8F58A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35BB518-39D8-4C49-8B98-82BF4F9A9866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35BB518-39D8-4C49-8B98-82BF4F9A9866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35BB518-39D8-4C49-8B98-82BF4F9A9866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35BB518-39D8-4C49-8B98-82BF4F9A9866}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {849C115A-2CA9-46AA-B1B7-3D9754080979}
+	EndGlobalSection
+EndGlobal
