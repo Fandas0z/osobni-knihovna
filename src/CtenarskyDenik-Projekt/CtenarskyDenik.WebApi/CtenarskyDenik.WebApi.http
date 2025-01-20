@@ -1,0 +1,6 @@
+@CtenarskyDenik.WebApi_HostAddress = http://localhost:5129
+
+GET {{CtenarskyDenik.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
