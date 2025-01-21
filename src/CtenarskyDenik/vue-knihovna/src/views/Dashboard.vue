@@ -1,11 +1,16 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <div>
+    <h1>Vaše knihovna</h1>
+    <book-list />
+  </div>
 </template>
 
-<style scoped>
+<script>
+import BookList from '../components/Books/BookList.vue';
 
-</style>
+export default {
+  components: {
+    BookList,
+  },
+};
+</script>
