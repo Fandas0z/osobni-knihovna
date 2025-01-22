@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CtenarskyDenik.Core\CtenarskyDenik.Core.csproj" />
+    <ProjectReference Include="..\CtenarskyDenik.Persistence\CtenarskyDenik.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
