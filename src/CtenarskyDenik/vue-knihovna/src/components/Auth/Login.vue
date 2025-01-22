@@ -1,9 +1,15 @@
 <template>
-  <div class="auth-form">
-    <h1>Přihlášení</h1>
+  <div class="login">
+    <h2>Přihlášení</h2>
     <form @submit.prevent="login">
-      <input v-model="email" type="email" placeholder="E-mail" required />
-      <input v-model="password" type="password" placeholder="Heslo" required />
+      <div>
+        <label for="email">Email:</label>
+        <input v-model="email" type="email" required />
+      </div>
+      <div>
+        <label for="password">Heslo:</label>
+        <input v-model="password" type="password" required />
+      </div>
       <button type="submit">Přihlásit se</button>
     </form>
   </div>
@@ -11,24 +17,32 @@
 
 <script>
 export default {
+  name: "Login",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
   },
   methods: {
     async login() {
       try {
-        await this.$store.dispatch('login', {
-          email: this.email,
-          password: this.password,
-        });
-        this.$router.push('/dashboard');
+        // Zde může být Axios volání na backend pro přihlášení
+        console.log("Email:", this.email);
+        console.log("Password:", this.password);
+
+        // Po úspěšném přihlášení přesměruj na dashboard
+        this.$router.push({ name: "Dashboard" });
       } catch (error) {
-        console.error('Chyba při přihlášení:', error);
+        console.error("Chyba při přihlášení:", error);
       }
     },
   },
 };
 </script>
+
+<style>
+.login {
+  margin-top: 20px;
+}
+</style>

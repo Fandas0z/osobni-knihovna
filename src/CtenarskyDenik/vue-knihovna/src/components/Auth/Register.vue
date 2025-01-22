@@ -1,35 +1,33 @@
 <template>
-  <div class="auth-form">
-    <h1>Registrace</h1>
+  <div class="register">
+    <h2>Registrace</h2>
     <form @submit.prevent="register">
-      <input v-model="email" type="email" placeholder="E-mail" required />
-      <input v-model="password" type="password" placeholder="Heslo" required />
-      <button type="submit">Registrovat</button>
+      <div>
+        <label for="email">E-mail:</label>
+        <input type="email" v-model="email" required />
+      </div>
+      <div>
+        <label for="password">Heslo:</label>
+        <input type="password" v-model="password" required />
+      </div>
+      <button type="submit">Registrovat se</button>
     </form>
   </div>
 </template>
 
 <script>
-import apiClient from '../../axios';
-
 export default {
+  name: "Register",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
   },
   methods: {
-    async register() {
-      try {
-        await apiClient.post('/auth/register', {
-          email: this.email,
-          password: this.password,
-        });
-        this.$router.push('/login');
-      } catch (error) {
-        console.error('Chyba při registraci:', error);
-      }
+    register() {
+      // Přidat logiku registrace
+      this.$router.push("/dashboard");
     },
   },
 };

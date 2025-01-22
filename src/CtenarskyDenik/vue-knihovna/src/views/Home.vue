@@ -1,8 +1,29 @@
 <template>
-  <div>
-    <h1>Vítejte v aplikaci Knihovníček</h1>
-    <p>Spravujte svou osobní knihovnu, přidávejte knihy a organizujte poznámky k nim.</p>
-    <router-link to="/login"><button>Přihlásit se</button></router-link>
-    <router-link to="/register"><button>Registrovat</button></router-link>
+  <div class="home">
+    <h1>Vítejte v Knihovničce</h1>
+    <p>Přihlaste se nebo se zaregistrujte pro přístup k vaší knihovně.</p>
+    <button @click="goToLogin">Přihlásit se</button>
+    <button @click="goToRegister">Registrovat se</button>
   </div>
 </template>
+
+<script>
+export default {
+  name: "Home",
+  methods: {
+    goToLogin() {
+      this.$router.push({ name: "Login" });
+    },
+    goToRegister() {
+      this.$router.push({ name: "Register" });
+    },
+  },
+};
+</script>
+
+<style>
+.home {
+  text-align: center;
+  margin-top: 50px;
+}
+</style>

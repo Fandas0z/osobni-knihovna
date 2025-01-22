@@ -1,30 +1,28 @@
 <template>
-  <div>
-    <h1>Seznam knih</h1>
+  <div class="book-list">
+    <h2>Seznam knih</h2>
     <ul>
-      <li v-for="book in books" :key="book.id">
-        {{ book.title }} ({{ book.author }})
-        <button @click="viewDetails(book.id)">Detail</button>
+      <li v-for="(book, index) in books" :key="index">
+        <strong>{{ book.title }}</strong> - {{ book.author }}
       </li>
     </ul>
-    <button @click="addBook">Přidat knihu</button>
   </div>
 </template>
 
 <script>
 export default {
+  name: "BookList",
   computed: {
     books() {
-      return this.$store.state.books;
-    },
-  },
-  methods: {
-    viewDetails(bookId) {
-      this.$router.push(`/books/${bookId}`);
-    },
-    addBook() {
-      this.$router.push('/books/add');
+      // Načtení seznamu knih z Vuex store
+      return this.$store.getters.allBooks;
     },
   },
 };
 </script>
+
+<style>
+.book-list {
+  margin-top: 20px;
+}
+</style>
