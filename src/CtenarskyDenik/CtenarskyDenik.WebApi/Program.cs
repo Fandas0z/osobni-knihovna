@@ -14,11 +14,10 @@ namespace CtenarskyDenik.WebApi
             // Add services to the container.
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-            
-                options.UseMySQL(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                   new MySqlServerVersion(new Version(10, 3, 25))
-                   ));
+     options.UseMySql(
+         builder.Configuration.GetConnectionString("DefaultConnection"),
+         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+                    ));
             
             
             builder.Services.AddCors(options =>
