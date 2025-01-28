@@ -1,26 +1,34 @@
 <template>
   <div>
-    <form @submit.prevent="addNote">
-      <input v-model="note" placeholder="Zadejte poznámku" required />
-      <button type="submit">Přidat</button>
-    </form>
+    <h2>Přidat poznámku</h2>
+    <textarea v-model="noteContent" placeholder="Napište poznámku"></textarea>
+    <button @click="submitNote">Přidat</button>
+    <button @click="$emit('close')">Zavřít</button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['bookId'],
+  props: {
+    bookId: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {
-      note: '',
+      noteContent: '',
     };
   },
   methods: {
-    async addNote() {
+    async submitNote() {
       try {
-        await this.$store.dispatch('addNote', { bookId: this.bookId, note: this.note });
-        this.note = '';
-        this.$emit('noteAdded');
+        const note = {
+          content: this.noteContent,
+        };
+        await this.$store.dispatch('addNote', { bookId: this.bookId, note });
+        this.noteContent = '';
+        alert('Poznámka byla přidána!');
       } catch (error) {
         console.error('Chyba při přidávání poznámky:', error);
       }

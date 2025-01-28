@@ -25,22 +25,19 @@ export default {
     };
   },
   methods: {
-    submitBook() {
-      // Vytvoříme objekt knihy
-      const newBook = {
-        title: this.title,
-        author: this.author,
-      };
-
-      // Zavoláme akci z Vuex
-      this.$store.dispatch("addBook", newBook);
-
-      // Reset formuláře
-      this.title = "";
-      this.author = "";
-
-      // Přesměrování na seznam knih nebo potvrzení
-      alert("Kniha byla úspěšně přidána!");
+    async submitBook() {
+      try {
+        const newBook = {
+          title: this.title,
+          author: this.author,
+        };
+        await this.$store.dispatch("addBook", newBook);
+        this.title = "";
+        this.author = "";
+        alert("Kniha byla úspěšně přidána!");
+      } catch (error) {
+        console.error("Chyba při přidávání knihy:", error);
+      }
     },
   },
 };

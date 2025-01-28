@@ -2,8 +2,10 @@
   <div class="home">
     <h1>Vítejte v Knihovničce</h1>
     <p>Přihlaste se nebo se zaregistrujte pro přístup k vaší knihovně.</p>
-    <button @click="goToLogin">Přihlásit se</button>
-    <button @click="goToRegister">Registrovat se</button>
+    <div class="actions">
+      <button @click="goToLogin">Přihlásit se</button>
+      <button @click="goToRegister">Registrovat se</button>
+    </div>
   </div>
 </template>
 
@@ -25,5 +27,9 @@ export default {
 .home {
   text-align: center;
   margin-top: 50px;
+}
+
+.actions {
+  margin-top: 20px;
 }
 </style>
