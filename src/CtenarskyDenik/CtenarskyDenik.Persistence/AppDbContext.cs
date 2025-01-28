@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore;
-using MySql.Data;
+
 using CtenarskyDenik.Core.Entities;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
