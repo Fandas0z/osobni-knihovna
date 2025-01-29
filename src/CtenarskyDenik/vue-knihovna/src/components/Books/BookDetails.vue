@@ -1,52 +1,63 @@
 <template>
-  <div>
-    <h1>{{ book.title }}</h1>
-    <p><strong>Autor:</strong> {{ book.author }}</p>
-    <p><strong>Žánr:</strong> {{ book.genre }}</p>
-    <p><strong>Rok vydání:</strong> {{ book.year }}</p>
+  <div class="book-details">
+    <h1>{{ book?.title }}</h1>
+    <p><strong>Autor:</strong> {{ book?.author }}</p>
+    <p><strong>Rok vydání:</strong> {{ book?.year }}</p>
 
     <h2>Poznámky</h2>
-    <note-list :notes="notes" :bookId="book.id" />
-    <note-form :bookId="book.id" @noteAdded="fetchNotes" />
+    <note-list :bookId="bookId" :notes="notes" />
+    <note-form :bookId="bookId" @noteAdded="fetchNotes" />
 
-    <button @click="$router.push('/dashboard')">Zpět</button>
   </div>
 </template>
 
 <script>
-import NoteList from '../Notes/NoteList.vue';
-import NoteForm from '../Notes/NoteForm.vue';
+import NoteList from "../Notes/NoteList.vue";
+import NoteForm from "../Notes/NoteForm.vue";
 
 export default {
   components: { NoteList, NoteForm },
   data() {
     return {
+      bookId: null,
       book: null,
       notes: [],
     };
   },
   async created() {
-    const bookId = this.$route.params.id;
-    await this.fetchBook(bookId);
-    await this.fetchNotes(bookId);
+    this.bookId = this.$route.params.id;
+    await this.fetchBook();
+    await this.fetchNotes();
   },
   methods: {
-    async fetchBook(bookId) {
+    async fetchBook() {
       try {
-        const response = await this.$store.dispatch('fetchBooks');
-        this.book = response.find((b) => b.id === parseInt(bookId));
+        const response = await this.$store.dispatch("fetchBooks");
+        this.book = response.find((b) => b.id === parseInt(this.bookId));
       } catch (error) {
-        console.error('Chyba při načítání knihy:', error);
+        console.error("Chyba při načítání knihy:", error);
       }
     },
-    async fetchNotes(bookId) {
+    async fetchNotes() {
       try {
-        await this.$store.dispatch('fetchNotes', bookId);
+        await this.$store.dispatch("fetchNotes", this.bookId);
         this.notes = this.$store.state.notes;
       } catch (error) {
-        console.error('Chyba při načítání poznámek:', error);
+        console.error("Chyba při načítání poznámek:", error);
       }
     },
   },
 };
 </script>
+
+<style>
+.book-details {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+</style>

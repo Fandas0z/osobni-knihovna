@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-
 import apiClient from "../axios"; // Import Axios klienta
 
 const store = createStore({
@@ -32,7 +31,11 @@ const store = createStore({
         },
         async addBook({ commit }, book) {
             try {
-                const response = await apiClient.post("/books", book);
+                const response = await apiClient.post("/books", {
+                    title: book.title,
+                    author: book.author,
+                    year: book.year, // Přidání roku vydání do API requestu
+                });
                 commit("ADD_BOOK", response.data);
             } catch (error) {
                 console.error("Chyba při přidávání knihy:", error);
@@ -40,7 +43,7 @@ const store = createStore({
         },
         async fetchNotes({ commit }, bookId) {
             try {
-                const response = await apiClient.get(`/notes/${bookId}`);
+                const response = await apiClient.get(`/books/${bookId}/notes`);
                 commit("SET_NOTES", response.data);
             } catch (error) {
                 console.error("Chyba při načítání poznámek:", error);
@@ -48,7 +51,9 @@ const store = createStore({
         },
         async addNote({ commit }, { bookId, note }) {
             try {
-                const response = await apiClient.post(`/notes/${bookId}`, note);
+                const response = await apiClient.post(`/books/${bookId}/notes`, {
+                    text: note.text, // Posílání pouze textu poznámky
+                });
                 commit("ADD_NOTE", response.data);
             } catch (error) {
                 console.error("Chyba při přidávání poznámky:", error);
@@ -62,4 +67,5 @@ const store = createStore({
 });
 
 export default store;
+
 

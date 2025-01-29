@@ -4,7 +4,7 @@
     <ul>
       <li v-for="book in books" :key="book.id">
         <div>
-          <strong>{{ book.title }}</strong> - {{ book.author }}
+          <strong>{{ book.title }}</strong> - {{ book.author }} ({{ book.year }})
         </div>
         <button @click="openNotesForm(book.id)">Přidat poznámku</button>
       </li>
