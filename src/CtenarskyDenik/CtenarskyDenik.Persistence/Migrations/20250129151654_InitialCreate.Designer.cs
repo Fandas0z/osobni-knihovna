@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtenarskyDenik.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250128204005_InitialCreate")]
+    [Migration("20250129151654_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,13 +36,12 @@ namespace CtenarskyDenik.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("BookId");
 

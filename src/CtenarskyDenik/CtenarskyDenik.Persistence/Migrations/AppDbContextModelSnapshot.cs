@@ -33,13 +33,12 @@ namespace CtenarskyDenik.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("BookId");
 
