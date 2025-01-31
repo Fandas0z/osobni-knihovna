@@ -23,7 +23,7 @@ const store = createStore({
     actions: {
         async fetchBooks({ commit }) {
             try {
-                const response = await apiClient.get("/books");
+                const response = await apiClient.get("/Books");
                 commit("SET_BOOKS", response.data);
             } catch (error) {
                 console.error("Chyba při načítání knih:", error);
@@ -31,11 +31,7 @@ const store = createStore({
         },
         async addBook({ commit }, book) {
             try {
-                const response = await apiClient.post("/books", {
-                    title: book.title,
-                    author: book.author,
-                    year: book.year, // Přidání roku vydání do API requestu
-                });
+                const response = await apiClient.post("/Books", book);
                 commit("ADD_BOOK", response.data);
             } catch (error) {
                 console.error("Chyba při přidávání knihy:", error);
@@ -43,7 +39,7 @@ const store = createStore({
         },
         async fetchNotes({ commit }, bookId) {
             try {
-                const response = await apiClient.get(`/books/${bookId}/notes`);
+                const response = await apiClient.get("/Notes?bookId=${bookId}");
                 commit("SET_NOTES", response.data);
             } catch (error) {
                 console.error("Chyba při načítání poznámek:", error);
@@ -51,8 +47,9 @@ const store = createStore({
         },
         async addNote({ commit }, { bookId, note }) {
             try {
-                const response = await apiClient.post(`/books/${bookId}/notes`, {
-                    text: note.text, // Posílání pouze textu poznámky
+                const response = await apiClient.post(`/Notes`, {
+                    bookId: bookId,
+                    content: note.content
                 });
                 commit("ADD_NOTE", response.data);
             } catch (error) {
