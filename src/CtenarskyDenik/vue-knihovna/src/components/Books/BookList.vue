@@ -16,6 +16,7 @@
 <script>
 import NoteForm from "../Notes/NoteForm.vue";
 
+
 export default {
   components: {
     NoteForm,

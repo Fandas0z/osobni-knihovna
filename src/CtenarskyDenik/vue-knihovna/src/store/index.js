@@ -39,7 +39,7 @@ const store = createStore({
         },
         async fetchNotes({ commit }, bookId) {
             try {
-                const response = await apiClient.get("/Notes?bookId=${bookId}");
+                const response = await apiClient.get(`/Notes?bookId=${bookId}`);
                 commit("SET_NOTES", response.data);
             } catch (error) {
                 console.error("Chyba při načítání poznámek:", error);
@@ -48,9 +48,10 @@ const store = createStore({
         async addNote({ commit }, { bookId, note }) {
             try {
                 const response = await apiClient.post(`/Notes`, {
-                    bookId: bookId,
+                    bookId,
                     content: note.content
                 });
+
                 commit("ADD_NOTE", response.data);
             } catch (error) {
                 console.error("Chyba při přidávání poznámky:", error);
@@ -60,6 +61,9 @@ const store = createStore({
     getters: {
         allBooks: (state) => state.books,
         allNotes: (state) => state.notes,
+        notesByBook: (state) => (bookId) => {
+            return state.notes.filter(note => note.bookId === bookId);
+        }
     },
 });
 

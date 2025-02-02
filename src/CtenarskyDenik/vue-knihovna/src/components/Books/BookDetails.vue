@@ -24,6 +24,11 @@ export default {
       notes: [],
     };
   },
+  computed: {
+    notes() {
+      return this.$store.getters.notesByBook(this.book?.id);
+    }
+  },
   async created() {
     this.bookId = this.$route.params.id;
     await this.fetchBook();
@@ -38,14 +43,15 @@ export default {
         console.error("Chyba při načítání knihy:", error);
       }
     },
-    async fetchNotes() {
+    async fetchNotes(bookId) {
       try {
-        await this.$store.dispatch("fetchNotes", this.bookId);
-        this.notes = this.$store.state.notes;
+        await this.$store.dispatch('fetchNotes', bookId);
       } catch (error) {
-        console.error("Chyba při načítání poznámek:", error);
+        console.error('Chyba při načítání poznámek:', error);
       }
-    },
+    }
+
+
   },
 };
 </script>
