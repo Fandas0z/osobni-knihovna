@@ -4,7 +4,6 @@ import apiClient from "../axios"; // Import Axios klienta
 const store = createStore({
     state: {
         books: [],
-        notes: [],
     },
     mutations: {
         SET_BOOKS(state, books) {
@@ -13,22 +12,41 @@ const store = createStore({
         ADD_BOOK(state, book) {
             state.books.push(book);
         },
-        SET_NOTES(state, notes) {
-            state.notes = notes;
-        },
-        ADD_NOTE(state, note) {
-            state.notes.push(note);
-        },
-    },
-    actions: {
-        async fetchBooks({ commit }) {
-            try {
-                const response = await apiClient.get("/Books");
-                commit("SET_BOOKS", response.data);
-            } catch (error) {
-                console.error("Chyba při načítání knih:", error);
+        UPDATE_BOOK(state, updatedBook) {
+            const index = state.books.findIndex(book => book.id === updatedBook.id);
+            if (index !== -1) {
+                state.books.splice(index, 1, updatedBook);
             }
         },
+
+        DELETE_BOOK(state, bookId) {
+            state.books = state.books.filter(book => book.id !== bookId);
+        }
+
+
+    },
+    actions: {
+        //async fetchBooks({ commit }) {
+        //    try {
+        //       const response = await apiClient.get("/Books");
+        //        commit("SET_BOOKS", response.data);
+        //   } catch (error) {
+        //        console.error("Chyba při načítání knih:", error);
+        //    }
+        //}
+    async fetchBooks({ commit }) {
+    try {
+        const response = await apiClient.get("/Books");
+        const books = response.data.map(book => ({
+            id: book.bookId, // Přemapování bookId na id
+            ...book,
+        }));
+        commit("SET_BOOKS", books);
+    } catch (error) {
+        console.error("Chyba při načítání knih:", error);
+    }
+}
+        ,
         async addBook({ commit }, book) {
             try {
                 const response = await apiClient.post("/Books", book);
@@ -37,34 +55,32 @@ const store = createStore({
                 console.error("Chyba při přidávání knihy:", error);
             }
         },
-        async fetchNotes({ commit }, bookId) {
+        async updateBook({ commit }, updatedBook) {
             try {
-                const response = await apiClient.get(`/Notes?bookId=${bookId}`);
-                commit("SET_NOTES", response.data);
-            } catch (error) {
-                console.error("Chyba při načítání poznámek:", error);
-            }
-        },
-        async addNote({ commit }, { bookId, note }) {
-            try {
-                const response = await apiClient.post(`/Notes`, {
-                    bookId,
-                    content: note.content
-                });
+                if (!updatedBook || !updatedBook.bookId) { // Zkontrolujeme správný název pole
+                    console.error("❌ Chyba: ID knihy není definováno!", updatedBook);
+                    return;
+                }
 
-                commit("ADD_NOTE", response.data);
+                const response = await apiClient.put('/Books/${updatedBook.bookId}', updatedBook); // Používáme bookId
+                commit("UPDATE_BOOK", response.data);
+                console.log("✅ Kniha s ID ${updatedBook.bookId} byla úspěšně aktualizována.");
             } catch (error) {
-                console.error("Chyba při přidávání poznámky:", error);
+                console.error("❌ Chyba při aktualizaci knihy:", error);
             }
         },
+        async deleteBook({ commit }, bookId) {
+            try {
+                await apiClient.delete('/Books/${bookId}');
+                commit("DELETE_BOOK", bookId);
+            } catch (error) {
+                console.error("❌ Chyba při mazání knihy:", error);
+            }
+        }
     },
     getters: {
         allBooks: (state) => state.books,
-        allNotes: (state) => state.notes,
-        notesByBook: (state) => (bookId) => {
-            return state.notes.filter(note => note.bookId === bookId);
-        }
-    },
+    }
 });
 
 export default store;

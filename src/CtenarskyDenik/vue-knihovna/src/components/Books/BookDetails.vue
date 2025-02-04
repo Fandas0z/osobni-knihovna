@@ -25,9 +25,7 @@ export default {
     };
   },
   computed: {
-    notes() {
-      return this.$store.getters.notesByBook(this.book?.id);
-    }
+
   },
   async created() {
     this.bookId = this.$route.params.id;
