@@ -10,33 +10,32 @@ namespace CtenarskyDenik.WebApi.Controllers
     public class NotesController : ControllerBase
     {
         private readonly AppDbContext _context;
-
+        
         public NotesController(AppDbContext context)
         {
             _context = context;
         }
-
+        //Get all notes
         [HttpGet]
         public IActionResult GetNotes()
         {
-            var notes = _context.Notes.Include(n => n.Book).ToList(); // Načítání Notes s vazbou na Book.
+            var notes = _context.Notes.Include(n => n.Book).ToList(); 
             return Ok(notes);
         }
-
+        //Get note by id
         [HttpPost]
         public IActionResult AddNote([FromBody] Note note)
         {
-            // Ověř, zda existuje kniha s daným BookId.
+       //Check if the specified BookId exists
             var book = _context.Books.FirstOrDefault(b => b.BookId == note.BookId);
             if (book == null)
             {
                 return BadRequest("The specified BookId does not exist.");
             }
 
-            // Přiděl knihu k poznámce.
+           
             note.Book = book;
-
-            // Ulož poznámku do databáze.
+            //Add the note to the database
             _context.Notes.Add(note);
             _context.SaveChanges();
 

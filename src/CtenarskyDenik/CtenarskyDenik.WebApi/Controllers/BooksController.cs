@@ -53,7 +53,7 @@ namespace CtenarskyDenik.WebApi.Controllers
                 return NotFound(new { Message = "Kniha nebyla nalezena." });
             }
 
-            // Aktualizace hodnot knihy
+            //Update book properties
             book.Title = updatedBook.Title;
             book.Author = updatedBook.Author;
             book.Year = updatedBook.Year;
