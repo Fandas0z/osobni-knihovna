@@ -17,9 +17,7 @@ namespace CtenarskyDenik.Core.Entities
         public int Year { get; set; }
         public string Author { get; set; }
 
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+      
         public ICollection<Note>? Notes { get; set; } = new List<Note>();
 
     }

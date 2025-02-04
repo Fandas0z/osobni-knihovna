@@ -37,15 +37,10 @@ namespace CtenarskyDenik.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("BookId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Books");
                 });
@@ -72,38 +67,6 @@ namespace CtenarskyDenik.Persistence.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("CtenarskyDenik.Core.Entities.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("CtenarskyDenik.Core.Entities.Book", b =>
-                {
-                    b.HasOne("CtenarskyDenik.Core.Entities.User", "User")
-                        .WithMany("Books")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CtenarskyDenik.Core.Entities.Note", b =>
                 {
                     b.HasOne("CtenarskyDenik.Core.Entities.Book", "Book")
@@ -118,11 +81,6 @@ namespace CtenarskyDenik.Persistence.Migrations
             modelBuilder.Entity("CtenarskyDenik.Core.Entities.Book", b =>
                 {
                     b.Navigation("Notes");
-                });
-
-            modelBuilder.Entity("CtenarskyDenik.Core.Entities.User", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

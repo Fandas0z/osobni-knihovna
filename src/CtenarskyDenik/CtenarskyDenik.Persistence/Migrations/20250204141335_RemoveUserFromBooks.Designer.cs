@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CtenarskyDenik.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250129151654_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250204141335_RemoveUserFromBooks")]
+    partial class RemoveUserFromBooks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
