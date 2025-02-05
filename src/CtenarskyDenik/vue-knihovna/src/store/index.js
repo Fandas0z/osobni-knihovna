@@ -26,14 +26,6 @@ const store = createStore({
 
     },
     actions: {
-        //async fetchBooks({ commit }) {
-        //    try {
-        //       const response = await apiClient.get("/Books");
-        //        commit("SET_BOOKS", response.data);
-        //   } catch (error) {
-        //        console.error("Chyba při načítání knih:", error);
-        //    }
-        //}
     async fetchBooks({ commit }) {
     try {
         const response = await apiClient.get("/Books");
@@ -62,16 +54,18 @@ const store = createStore({
                     return;
                 }
 
-                const response = await apiClient.put('/Books/${updatedBook.bookId}', updatedBook); // Používáme bookId
+                const response = await apiClient.put(`/Books/${updatedBook.bookId}`, updatedBook); // Používáme bookId
                 commit("UPDATE_BOOK", response.data);
                 console.log("✅ Kniha s ID ${updatedBook.bookId} byla úspěšně aktualizována.");
+
             } catch (error) {
                 console.error("❌ Chyba při aktualizaci knihy:", error);
             }
         },
         async deleteBook({ commit }, bookId) {
             try {
-                await apiClient.delete('/Books/${bookId}');
+
+                await apiClient.delete(`/Books/${bookId}`);
                 commit("DELETE_BOOK", bookId);
             } catch (error) {
                 console.error("❌ Chyba při mazání knihy:", error);

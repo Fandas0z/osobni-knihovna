@@ -7,6 +7,7 @@
           <strong>{{ book.title }}</strong> - {{ book.author }} ({{ book.year }})
           <button @click="openEditForm(book)">Upravit</button>
           <button @click="deleteBook(book.bookId)">Smazat</button>
+          <button @click="addNote">Přidat poznámku</button>
         </div>
 
         <div v-else>
@@ -34,6 +35,9 @@ export default {
     },
   },
   methods: {
+    addNote(){
+
+    },
     openEditForm(book) {
       book.editing = true;
     },
