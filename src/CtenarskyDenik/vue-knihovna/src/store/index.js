@@ -1,9 +1,11 @@
 import { createStore } from "vuex";
-import apiClient from "../axios"; // Import Axios klienta
+import apiClient from "../axios";
+import axios from "axios"; // Import Axios klienta
 
 const store = createStore({
     state: {
         books: [],
+        notes: {}
     },
     mutations: {
         SET_BOOKS(state, books) {
@@ -21,6 +23,21 @@ const store = createStore({
 
         DELETE_BOOK(state, bookId) {
             state.books = state.books.filter(book => book.id !== bookId);
+        },
+        SET_NOTES(state, { bookId, notes }) {
+            const book = state.books.find(book => book.bookId === bookId);
+            if (book) {
+                book.notes = notes;
+            }
+        },
+        ADD_NOTE(state, { note }) {
+            const book = state.books.find(book => book.bookId === note.bookId);
+            if (book) {
+                if (!book.notes) {
+                    book.notes = [];
+                }
+                book.notes.push(note);
+            }
         }
 
 
@@ -70,10 +87,33 @@ const store = createStore({
             } catch (error) {
                 console.error("❌ Chyba při mazání knihy:", error);
             }
+        },
+        async fetchNotes({ commit }, bookId) {
+            try {
+
+                const response = await apiClient.get("/Notes");
+                commit("SET_NOTES", { bookId, notes: response.data });
+
+            } catch (error) {
+                console.error();
+            }
+        },
+        async addNote({ commit }, { note }) {
+            try {
+                const response = await apiClient.post("/Notes", {
+                    bookId: parseInt(note.bookId),
+                    content: note.content.trim()
+                });
+                commit("ADD_NOTE", { note: response.data });
+            } catch (error) {
+                console.error("Chyba při přidávání poznámky:", error);
+            }
+
         }
     },
     getters: {
         allBooks: (state) => state.books,
+        getNotesByBookId: (state) => (bookId) => state.notes[bookId] || []
     }
 });
 

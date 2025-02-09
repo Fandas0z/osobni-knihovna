@@ -7,7 +7,7 @@
           <strong>{{ book.title }}</strong> - {{ book.author }} ({{ book.year }})
           <button @click="openEditForm(book)">Upravit</button>
           <button @click="deleteBook(book.bookId)">Smazat</button>
-          <button @click="addNote">Přidat poznámku</button>
+          <button @click="toggleNoteForm(book.bookId)">Přidat poznámku</button>
         </div>
 
         <div v-else>
@@ -17,6 +17,18 @@
           <button @click="saveBook(book)">Uložit</button>
           <button @click="cancelEdit(book)">Zrušit</button>
         </div>
+
+        <!-- Formulář pro přidání poznámky -->
+        <div v-if="showNoteForm === book.bookId">
+          <textarea v-model="newNote" placeholder="Napište poznámku"></textarea>
+          <button @click="addNote(book.bookId)">Uložit poznámku</button>
+          <button @click="toggleNoteForm(null)">Zrušit</button>
+        </div>
+
+        <!-- Seznam poznámek -->
+        <ul v-if="getNotes(book.bookId).length">
+          <li v-for="(note, index) in getNotes(book.bookId)" :key="index">{{ note.content }}</li>
+        </ul>
       </li>
     </ul>
 
@@ -29,15 +41,21 @@
 
 
 export default {
+  data() {
+    return {
+      showNoteForm: null, // ID knihy, ke které se přidává poznámka
+      newNote: "", // Obsah poznámky
+    };
+  },
   computed: {
     books() {
       return this.$store.getters.allBooks; // Data z Vuex Store
     },
+    getNotes() {
+      return (bookId) => this.$store.getters.getNotesByBookId(bookId);
+    }
   },
   methods: {
-    addNote(){
-
-    },
     openEditForm(book) {
       book.editing = true;
     },
@@ -63,9 +81,37 @@ export default {
       book.editing = false; // Zruší režim úprav
       this.$store.dispatch("fetchBooks"); // Obnoví knihy z databáze
     },
+    toggleNoteForm(bookId) {
+      console.log("Přepínám formulář pro knihu:", bookId);
+      this.showNoteForm = this.showNoteForm === bookId ? null : bookId;
+      this.newNote = "";
+    },
+    async addNote(bookId) {
+      if (!this.newNote.trim()) {
+        console.error("❌ Chyba: Poznámka nemůže být prázdná!");
+        return;
+      }
+      try {
+        const note = {
+          bookId: bookId,
+          content: this.newNote.trim()
+        };
+        await this.$store.dispatch("addNote", { note });
+        console.log("✅ Poznámka byla úspěšně přidána:", note);
+        this.newNote = "";
+        this.showNoteForm = null;
+      } catch (error) {
+        console.error("❌ Chyba při přidávání poznámky:", error);
+      }
+    }
   },
+
   async mounted() {
     await this.$store.dispatch("fetchBooks"); // Načte knihy při načtení komponenty
+    for (const book of this.books){
+      await this.$store.dispatch("fetchNotes", book.bookId);
+    }
+
   },
 };
 </script>
