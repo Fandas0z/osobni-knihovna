@@ -22,24 +22,29 @@ namespace CtenarskyDenik.WebApi.Controllers
             var notes = _context.Notes.Include(n => n.Book).ToList(); 
             return Ok(notes);
         }
-        //Get note by id
         [HttpPost]
         public IActionResult AddNote([FromBody] Note note)
         {
-       //Check if the specified BookId exists
+            // Zkontrolujeme, zda je model platný (např. validace anotací na modelu)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Zkontrolujeme, zda existuje kniha s daným BookId
             var book = _context.Books.FirstOrDefault(b => b.BookId == note.BookId);
             if (book == null)
             {
-                return BadRequest("The specified BookId does not exist.");
+                return BadRequest(new { message = "The specified BookId does not exist." });
             }
 
-           
+            // Přidáme poznámku ke knize
             note.Book = book;
-            //Add the note to the database
             _context.Notes.Add(note);
             _context.SaveChanges();
 
-            return Ok(note);
+            // Vrátíme úspěšnou odpověď s přidanou poznámkou
+            return CreatedAtAction(nameof(AddNote), new { id = note.NoteId }, note);
         }
     }
 }
