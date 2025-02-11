@@ -49,10 +49,10 @@ export default {
   },
   computed: {
     books() {
-      return this.$store.getters.allBooks; // Data z Vuex Store
+      return this.$store.getters.allBooks;
     },
     getNotes() {
-      return (bookId) => this.$store.getters.getNotesByBookId(bookId);
+      return (bookId) => this.$store.getters.getNotesByBookId(bookId) || [];
     }
   },
   methods: {
@@ -86,6 +86,24 @@ export default {
       this.showNoteForm = this.showNoteForm === bookId ? null : bookId;
       this.newNote = "";
     },
+    //async addNote(bookId) {
+    //  if (!this.newNote.trim()) {
+    //   console.error("❌ Chyba: Poznámka nemůže být prázdná!");
+    //   return;
+    // }
+    // try {
+    //   const note = {
+    //     bookId: bookId,
+    //     content: this.newNote.trim()
+    //   };
+    //   await this.$store.dispatch("addNote", { note });
+    //   console.log("✅ Poznámka byla úspěšně přidána:", note);
+    //   this.newNote = "";
+    //    this.showNoteForm = null;
+    // } catch (error) {
+    //   console.error("❌ Chyba při přidávání poznámky:", error);
+    // }
+    //}
     async addNote(bookId) {
       if (!this.newNote.trim()) {
         console.error("❌ Chyba: Poznámka nemůže být prázdná!");
@@ -96,8 +114,14 @@ export default {
           bookId: bookId,
           content: this.newNote.trim()
         };
-        await this.$store.dispatch("addNote", { note });
+
+        await this.$store.dispatch("addNote", { bookId, note });
+
         console.log("✅ Poznámka byla úspěšně přidána:", note);
+
+        // ⬇ Po přidání poznámky rovnou načteme aktualizovaný seznam poznámek
+        await this.$store.dispatch("fetchNotes", bookId);
+
         this.newNote = "";
         this.showNoteForm = null;
       } catch (error) {
@@ -107,11 +131,10 @@ export default {
   },
 
   async mounted() {
-    await this.$store.dispatch("fetchBooks"); // Načte knihy při načtení komponenty
-    for (const book of this.books){
-      await this.$store.dispatch("fetchNotes", book.bookId);
+    await this.$store.dispatch("fetchBooks"); // Načtení knih
+    for (const book of this.books) {
+      await this.$store.dispatch("fetchNotes", book.bookId); // Načtení poznámek pro každou knihu
     }
-
-  },
+  }
 };
 </script>
