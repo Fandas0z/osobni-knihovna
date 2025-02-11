@@ -19,32 +19,57 @@ namespace CtenarskyDenik.WebApi.Controllers
         [HttpGet]
         public IActionResult GetNotes()
         {
-            var notes = _context.Notes.Include(n => n.Book).ToList(); 
+            var notes = _context.Notes
+                .Include(n => n.Book)
+                .Select(n => new
+                {
+                    NoteId = n.NoteId,
+                    BookId = n.BookId, // Ujisti se, že bookId je v odpovědi
+                    Content = n.Content
+                })
+                .ToList();
+
             return Ok(notes);
         }
         [HttpPost]
         public IActionResult AddNote([FromBody] Note note)
         {
-            // Zkontrolujeme, zda je model platný (např. validace anotací na modelu)
-            if (!ModelState.IsValid)
+            if (note == null || string.IsNullOrWhiteSpace(note.Content))
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { message = "Invalid note data." });
             }
 
-            // Zkontrolujeme, zda existuje kniha s daným BookId
             var book = _context.Books.FirstOrDefault(b => b.BookId == note.BookId);
             if (book == null)
             {
                 return BadRequest(new { message = "The specified BookId does not exist." });
             }
 
-            // Přidáme poznámku ke knize
             note.Book = book;
             _context.Notes.Add(note);
             _context.SaveChanges();
 
-            // Vrátíme úspěšnou odpověď s přidanou poznámkou
-            return CreatedAtAction(nameof(AddNote), new { id = note.NoteId }, note);
+            return CreatedAtAction(nameof(GetNotes), new { id = note.NoteId }, note);
+        }
+        [HttpGet("{bookId}")]
+        public IActionResult GetNotesForBook(int bookId)
+        {
+            var notes = _context.Notes
+                .Where(n => n.BookId == bookId) // Filtrujeme podle bookId
+                .Select(n => new
+                {
+                    NoteId = n.NoteId,
+                    BookId = n.BookId,
+                    Content = n.Content
+                })
+                .ToList();
+
+            if (!notes.Any())
+            {
+                return NotFound(new { message = "No notes found for this book." });
+            }
+
+            return Ok(notes);
         }
     }
 }
