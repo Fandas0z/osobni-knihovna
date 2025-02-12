@@ -26,8 +26,22 @@
         </div>
 
         <!-- Seznam poznámek -->
-        <ul v-if="getNotes(book.bookId).length">
-          <li v-for="(note, index) in getNotes(book.bookId)" :key="index">{{ note.content }}</li>
+<!--        <ul v-if="getNotes(book.bookId).length">-->
+<!--          <li v-for="(note, index) in getNotes(book.bookId)" :key="index">{{ note.content }}</li>-->
+<!--        </ul>-->
+        <ul>
+          <li v-for="note in getNotes(book.bookId)" :key="note.noteId">
+            <div v-if="!note.editing">
+              {{ note.content }}
+              <button @click="toggleEditNote(note)">Upravit</button>
+            </div>
+
+            <div v-else>
+              <input v-model="note.editingContent" type="text" />
+              <button @click="saveNote(note)">Uložit</button>
+              <button @click="toggleEditNote(note)">Zrušit</button>
+            </div>
+          </li>
         </ul>
       </li>
     </ul>
@@ -127,6 +141,20 @@ export default {
       } catch (error) {
         console.error("❌ Chyba při přidávání poznámky:", error);
       }
+    },
+    toggleEditNote(note) {
+      note.editing = !note.editing;
+      note.editingContent = note.content;
+    },
+    async saveNote(note) {
+      if (!note.editingContent.trim()) return;
+
+      await this.$store.dispatch("updateNote", {
+        noteId: note.noteId,
+        newContent: note.editingContent
+      });
+
+      note.editing = false;
     }
   },
 

@@ -71,5 +71,31 @@ namespace CtenarskyDenik.WebApi.Controllers
 
             return Ok(notes);
         }
+        [HttpPut("{noteId}")]
+        public IActionResult UpdateNote(int noteId, [FromBody] Note updatedNote)
+        {
+            var note = _context.Notes.Find(noteId);
+            if (note == null)
+            {
+                return NotFound(new { message = "Poznámka nebyla nalezena." });
+            }
+
+            if (string.IsNullOrWhiteSpace(updatedNote.Content))
+            {
+                return BadRequest(new { message = "Obsah poznámky nemůže být prázdný." });
+            }
+
+            note.Content = updatedNote.Content;
+            _context.Notes.Update(note);
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                note.NoteId,
+                note.BookId, // Přidáno, aby Vuex měl správná data
+                note.Content
+            });
+        }
+
     }
 }

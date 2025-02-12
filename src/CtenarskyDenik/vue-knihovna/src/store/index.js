@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import apiClient from "../axios";
-import axios from "axios"; // Import Axios klienta
+
 
 const store = createStore({
     state: {
@@ -39,6 +39,27 @@ const store = createStore({
         //}
         ADD_NOTE(state, note) {
             state.notes.push(note); // Přidáme novou poznámku do seznamu
+        },
+        UPDATE_NOTE(state, updatedNote) {
+            if (!updatedNote || !updatedNote.bookId) {
+                console.error("❌ Chyba: updatedNote je neplatný!", updatedNote);
+                return;
+            }
+
+            const book = state.books.find(b => b.bookId === updatedNote.bookId);
+            if (!book) {
+                console.error("❌ Chyba: Kniha s bookId nenalezena!", updatedNote.bookId);
+                return;
+            }
+
+            const noteIndex = book.notes.findIndex(n => n.noteId === updatedNote.noteId);
+            if (noteIndex === -1) {
+                console.error("❌ Chyba: Poznámka s noteId nenalezena!", updatedNote.noteId);
+                return;
+            }
+
+            // Aktualizujeme poznámku v seznamu
+            book.notes[noteIndex] = updatedNote;
         }
 
     },
@@ -110,6 +131,20 @@ const store = createStore({
 
             } catch (error) {
                 console.error("Chyba při přidávání poznámky:");
+            }
+        },
+        async updateNote({ commit, dispatch }, { noteId, newContent }) {
+            try {
+                const response = await apiClient.put(`/Notes/${noteId}`, { content: newContent });
+
+                if (response.status === 200 && response.data.BookId) {
+                    commit("UPDATE_NOTE", response.data);
+
+                } else {
+                    console.error("❌ Chyba: Odpověď z backendu neobsahuje BookId!", response.data);
+                }
+            } catch (error) {
+                console.error("❌ Chyba při aktualizaci poznámky:", error);
             }
         }
 //async addNote({ commit, dispatch }, { note }) {
