@@ -24,13 +24,14 @@ namespace CtenarskyDenik.WebApi.Controllers
                 .Select(n => new
                 {
                     NoteId = n.NoteId,
-                    BookId = n.BookId, // Ujisti se, že bookId je v odpovědi
+                    BookId = n.BookId, 
                     Content = n.Content
                 })
                 .ToList();
 
             return Ok(notes);
         }
+        // Add note
         [HttpPost]
         public IActionResult AddNote([FromBody] Note note)
         {
@@ -51,11 +52,12 @@ namespace CtenarskyDenik.WebApi.Controllers
 
             return CreatedAtAction(nameof(GetNotes), new { id = note.NoteId }, note);
         }
+        // Get notes for a specific book
         [HttpGet("{bookId}")]
         public IActionResult GetNotesForBook(int bookId)
         {
             var notes = _context.Notes
-                .Where(n => n.BookId == bookId) // Filtrujeme podle bookId
+                .Where(n => n.BookId == bookId) // Filter notes by bookId
                 .Select(n => new
                 {
                     NoteId = n.NoteId,
@@ -71,6 +73,7 @@ namespace CtenarskyDenik.WebApi.Controllers
 
             return Ok(notes);
         }
+        // Update note
         [HttpPut("{noteId}")]
         public IActionResult UpdateNote(int noteId, [FromBody] Note updatedNote)
         {
@@ -95,6 +98,23 @@ namespace CtenarskyDenik.WebApi.Controllers
                 note.BookId, // Přidáno, aby Vuex měl správná data
                 note.Content
             });
+        }
+        // Delete note
+        [HttpDelete("{noteId}")]
+        
+        public IActionResult DeleteNote(int noteId)
+        {
+            // Find the note by its ID
+            var note = _context.Notes.FirstOrDefault(n => n.NoteId == noteId);
+            if (note == null)
+            {
+                return NotFound(new { message = "Poznámka nenalezena." });
+            }
+            
+            _context.Notes.Remove(note);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Poznámka byla úspěšně smazána." });
         }
 
     }
