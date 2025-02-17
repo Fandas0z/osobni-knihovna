@@ -32,14 +32,15 @@
         <ul>
           <li v-for="note in getNotes(book.bookId)" :key="note.noteId">
             <div v-if="!note.editing">
-              {{ note.content }}
-              <button @click="toggleEditNote(note)">Upravit</button>
+              <span>{{ note.content }}</span>
+              <button @click="toggleEditNote(note)">✏️ Upravit</button>
+              <button @click="deleteNote(note.noteId)">🗑️ Smazat</button>
             </div>
 
             <div v-else>
               <input v-model="note.editingContent" type="text" />
-              <button @click="saveNote(note)">Uložit</button>
-              <button @click="toggleEditNote(note)">Zrušit</button>
+              <button @click="saveNote(note)">💾 Uložit</button>
+              <button @click="toggleEditNote(note)">❌ Zrušit</button>
             </div>
           </li>
         </ul>
@@ -155,6 +156,14 @@ export default {
       });
 
       note.editing = false;
+    },
+    async deleteNote(noteId) {
+      try {
+        await this.$store.dispatch("deleteNote", noteId);
+        console.log("🗑️ Poznámka smazána:", noteId);
+      } catch (error) {
+        console.error("❌ Chyba při mazání poznámky:", error);
+      }
     }
   },
 

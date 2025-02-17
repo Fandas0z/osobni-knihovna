@@ -60,6 +60,11 @@ const store = createStore({
 
             // Aktualizujeme poznámku v seznamu
             book.notes[noteIndex] = updatedNote;
+        },
+        DELETE_NOTE(state, { bookId, noteId }) {
+            if (!state.notes[bookId]) return;
+
+            state.notes[bookId] = state.notes[bookId].filter(n => n.noteId !== noteId);
         }
 
     },
@@ -85,7 +90,7 @@ const store = createStore({
                 console.error("Chyba při přidávání knihy:", error);
             }
         },
-        async updateBook({ commit }, updatedBook) {
+        async updateBook({ commit, dispatch }, updatedBook) {
             try {
                 if (!updatedBook || !updatedBook.bookId) { // Zkontrolujeme správný název pole
                     console.error("❌ Chyba: ID knihy není definováno!", updatedBook);
@@ -94,17 +99,19 @@ const store = createStore({
 
                 const response = await apiClient.put(`/Books/${updatedBook.bookId}`, updatedBook); // Používáme bookId
                 commit("UPDATE_BOOK", response.data);
+                await dispatch("fetchBooks");
                 console.log("✅ Kniha s ID ${updatedBook.bookId} byla úspěšně aktualizována.");
 
             } catch (error) {
                 console.error("❌ Chyba při aktualizaci knihy:", error);
             }
         },
-        async deleteBook({ commit }, bookId) {
+        async deleteBook({ commit, dispatch }, bookId) {
             try {
 
                 await apiClient.delete(`/Books/${bookId}`);
                 commit("DELETE_BOOK", bookId);
+                await dispatch("fetchBooks");
             } catch (error) {
                 console.error("❌ Chyba při mazání knihy:", error);
             }
@@ -145,6 +152,14 @@ const store = createStore({
                 }
             } catch (error) {
                 console.error("❌ Chyba při aktualizaci poznámky:", error);
+            }
+        },
+        async deleteNote({ commit }, noteId) {
+            try {
+                await apiClient.delete(`/Notes/${noteId}`);
+                commit("DELETE_NOTE", { bookId: noteId.bookId, noteId });
+            } catch (error) {
+                console.error("❌ Chyba při mazání poznámky:", error);
             }
         }
 //async addNote({ commit, dispatch }, { note }) {
