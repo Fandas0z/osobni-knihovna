@@ -140,45 +140,26 @@ const store = createStore({
                 console.error("Chyba při přidávání poznámky:");
             }
         },
-        async updateNote({ commit, dispatch }, { noteId, newContent }) {
+        async updateNote({ dispatch }, { noteId, newContent, bookId }) {
             try {
-                const response = await apiClient.put(`/Notes/${noteId}`, { content: newContent });
-
-                if (response.status === 200 && response.data.BookId) {
-                    commit("UPDATE_NOTE", response.data);
-
-                } else {
-                    console.error("❌ Chyba: Odpověď z backendu neobsahuje BookId!", response.data);
-                }
+                await apiClient.put(`/Notes/${noteId}`, { content: newContent });
+                await dispatch("fetchNotes", bookId); // 🔄 Refresh poznámek po úpravě
             } catch (error) {
-                console.error("❌ Chyba při aktualizaci poznámky:", error);
+                console.error("Chyba při aktualizaci poznámky:", error);
             }
         },
-        async deleteNote({ commit }, noteId) {
+        async deleteNote({ commit, dispatch }, { noteId, bookId }) {
             try {
                 await apiClient.delete(`/Notes/${noteId}`);
-                commit("DELETE_NOTE", { bookId: noteId.bookId, noteId });
+                commit("DELETE_NOTE", { bookId, noteId });
+
+                // ⬇ Po odstranění poznámky načteme znovu poznámky pro danou knihu
+                await dispatch("fetchNotes", bookId);
+                console.log(`🗑️ Poznámka ${noteId} smazána a poznámky pro knihu ${bookId} obnoveny.`);
             } catch (error) {
                 console.error("❌ Chyba při mazání poznámky:", error);
             }
         }
-//async addNote({ commit, dispatch }, { note }) {
-        //   try {
-        //      const response = await apiClient.post("/Notes", {
-        //           bookId: parseInt(note.bookId),
-        //          content: note.content.trim()
-        //       });
-
-        // Po přidání poznámky znovu načteme všechny poznámky
-        //       await dispatch("fetchNotes");
-
-        //      commit("ADD_NOTE", { note: response.data });
-        //   } catch (error) {
-        //      console.error("❌ Chyba při přidávání poznámky:", error);
-        //       await dispatch("fetchNotes");
-        //   }
-//,
-
     },
     getters: {
         allBooks: (state) => state.books,
