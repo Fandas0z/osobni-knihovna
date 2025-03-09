@@ -21,6 +21,6 @@ export default {
 
 <style>
 .dashboard {
-  margin-top: 20px;
+  padding: 20px 0;
 }
 </style>

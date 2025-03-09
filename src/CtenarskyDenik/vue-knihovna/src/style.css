@@ -1,79 +1,150 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+/* Reset základních stylů pro konzistentní vzhled napříč prohlížeči */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Nastavení základního stylu pro tělo stránky */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  max-width: 1280px;
+/* Kontejner pro obsah s maximální šířkou a centrálním zarovnáním */
+.container {
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 20px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Stylování nadpisů pro lepší hierarchii obsahu */
+h1, h2, h3 {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+/* Základní styl pro odstavce */
+p {
+  margin-bottom: 15px;
+}
+
+/* Stylování navigačního panelu */
+.navbar {
+  background-color: #343a40;
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.navbar-links {
+  float: right;
+}
+
+.navbar-links a {
+  margin-left: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Základní styl pro tlačítka */
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button.secondary {
+  background-color: #6c757d;
+}
+
+button.secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Stylování seznamu knih */
+.book-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.book-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.book-actions button {
+  margin-left: 5px;
+}
+
+/* Stylování formulářů */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Stylování pro domovskou stránku */
+.home {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.home .actions {
+  margin-top: 20px;
+}
+
+/* Stylování pro dashboard */
+.dashboard {
+  padding: 20px 0;
 }
